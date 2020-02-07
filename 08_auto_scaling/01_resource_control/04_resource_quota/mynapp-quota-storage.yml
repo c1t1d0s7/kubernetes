@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: mynapp-quota-storage
+spec:
+  hard:
+    requests.storage: 10Gi
+    glusterfile.storageclass.storage.k8s.io/requests.storage: 5Gi

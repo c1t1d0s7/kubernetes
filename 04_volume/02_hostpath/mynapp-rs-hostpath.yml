@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta2
+kind: ReplicaSet
+metadata:
+  name: mynapp-rs-hp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mynapp-rs-hp
+  template:
+    metadata:
+      labels:
+        app: mynapp-rs-hp
+    spec:
+      containers:
+      - name: web-server
+        image: nginx:alpine
+        volumeMounts:
+        - name: web-content
+          mountPath: /usr/share/nginx/html
+        ports:
+        - containerPort: 80
+      volumes:
+      - name: web-content
+        hostPath:
+          type: Directory
+          path: /web_contents

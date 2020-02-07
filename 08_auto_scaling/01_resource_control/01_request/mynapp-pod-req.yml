@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mynapp-pod-req
+spec:
+  containers:
+  - image: c1t1d0s7/myweb
+    name: mynapp
+    resources:
+      requests:
+        cpu: 200m
+        memory: 10Mi

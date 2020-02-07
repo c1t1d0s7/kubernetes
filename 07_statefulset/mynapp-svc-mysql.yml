@@ -1,0 +1,27 @@
+# For Master 
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-svc-write
+spec:
+  clusterIP: None
+  ports:
+  - name: mysql
+    port: 3306
+  selector:
+    app: mysql-sts
+
+---
+# For Slave
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-svc-read
+  labels:
+    app: mysql-sts
+spec:
+  ports:
+  - name: mysql
+    port: 3306
+  selector:
+    app: mysql

@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mynapp-ing-tls-term
+spec:
+  tls:
+  - hosts:
+    - mynapp.example.com
+    secretName: mynapp-tls-secret
+  rules:
+  - host: mynapp.example.com
+    http:
+      paths:
+      - path: /
+        backend: 
+          serviceName: mynapp-svc-ext-np
+          servicePort: 80

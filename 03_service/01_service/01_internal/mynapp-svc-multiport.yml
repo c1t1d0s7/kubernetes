@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mynapp-svc-mp
+spec:
+  ports:
+  - name: mynapp-http
+    port: 80
+    targetPort: 8080
+  - name: mynapp-https
+    port: 443
+    targetPort: 8443
+  selector:
+    app: mynapp-rs

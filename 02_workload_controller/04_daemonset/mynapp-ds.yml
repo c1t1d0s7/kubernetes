@@ -1,0 +1,20 @@
+apiVersion: apps/v1beta2
+kind: DaemonSet
+metadata:
+  name: mynapp-ds
+spec:
+  selector:
+    matchLabels:
+      app: mynapp-ds
+  template:
+    metadata:
+      labels:
+        app: mynapp-ds
+    spec:
+      nodeSelector:
+        node: development
+      containers:
+      - name: mynapp
+        image: c1t1d0s7/myweb
+        ports:
+        - containerPort: 8080

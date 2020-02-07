@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mynapp-ing-mpath
+spec:
+  rules:
+  - host: mynapp.example.com
+    http:
+      paths:
+        - path: /web1
+          backend:
+            serviceName: mynapp-svc-ext-np1
+            servicePort: 80
+        - path: /web2
+          backend:
+            serviceName: mynapp-svc-ext-np2
+            servicePort: 80
