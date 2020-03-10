@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mynapp-pod-lim
+spec:
+  containers:
+  - image: c1t1d0s7/myweb
+    name: mynapp
+    resources:
+      limits:
+        cpu: 0.5
+        memory: 20Mi

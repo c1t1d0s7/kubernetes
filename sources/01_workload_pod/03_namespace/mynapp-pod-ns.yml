@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mynapp-pod-ns
+  namespace: development
+spec:
+  containers:
+  - image: c1t1d0s7/myweb
+    name: mynapp
+    ports:
+    - containerPort: 8080
+      protocol: TCP

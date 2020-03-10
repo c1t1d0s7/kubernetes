@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mynapp-pod-label
+  labels:
+    env: dev
+    tier: frontend
+spec:
+  containers:
+  - image: c1t1d0s7/myweb
+    name: mynapp
+    ports:
+    - containerPort: 8080
+      protocol: TCP
