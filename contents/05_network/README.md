@@ -8,4 +8,6 @@
 
 - 클러스터 외부 서비스에 "ExternalName 유형" 추가 https://kubernetes.io/ko/docs/concepts/services-networking/service/#externalname
 - 클러스터 외부 서비스에 "externalIPs 유형" 추가 https://kubernetes.io/ko/docs/concepts/services-networking/service/#외부-ip
-- praqma/network-multitool 자체 제작? https://github.com/Praqma/Network-MultiTool/blob/master/Dockerfile
+
+## 완료
+- praqma/network-multitool --> c1t1d0s7/network-multitool
