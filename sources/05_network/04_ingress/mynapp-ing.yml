@@ -4,7 +4,7 @@ metadata:
   name: mynapp-ing
 spec:
   rules:
-  - host: cccr.example.com
+  - host: mynapp.example.com
     http:
       paths:
       - path: /
