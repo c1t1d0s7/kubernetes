@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: mynapp-rc
+  name: mynapp-rc-v1
 spec:
   replicas: 3
   template:

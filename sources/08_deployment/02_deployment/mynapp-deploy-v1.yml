@@ -5,6 +5,12 @@ metadata:
   labels:
     app: mynapp-deploy
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingupdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  minReadySeconds: 5
   replicas: 3
   selector:
     matchLabels:
