@@ -15,10 +15,5 @@ spec:
       containers:
       - name: mynapp
         image: c1t1d0s7/myweb
-        readinessProbe:
-          exec:
-            command:
-              - ls
-              - /var/ready
         ports:
         - containerPort: 8080
