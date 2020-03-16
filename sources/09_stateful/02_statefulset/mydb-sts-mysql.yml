@@ -7,7 +7,7 @@ spec:
     matchLabels:
       app: mydb
   serviceName: mydb
-  replicas: 3
+  replicas: 2 
   template:
     metadata:
       labels:
