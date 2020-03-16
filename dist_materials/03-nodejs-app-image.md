@@ -31,10 +31,10 @@ var www = http.createServer(handler);
 www.listen(8080);
 ```
 
-위 Node.js 코드는 8080 포트로 애플리케이션에 접속 시 HTTP 응답코드 200을 리턴하며, HTTP 바디에 메시지, 호스트 이름, 플랫폼 종류, 업타임, IP, DNS 서버 주소가 리턴 되도록 하는 간단한 애플리케이션이다.
+위 Node.js 코드는 8080 포트로 애플리케이션에 접속 시 HTTP 응답코드 200을 리턴하며, HTTP 바디에 메시지, 호스트 이름, 플랫폼 종류, 업타임, IP, DNS 서버 주소가 리턴 되도록 하는 간단한 애플리케이션
 
-### 2) 사용자 지정 이미지 생성용 Dockerfile
-위에서 작성한 index.js 파일을 포함하는 사용자 지정 이미지를 생성하기 위한 Dockerfile을 작성한다.
+## 2. 사용자 지정 이미지 생성용 Dockerfile
+위에서 작성한 index.js 파일을 포함하는 사용자 지정 이미지를 생성하기 위한 Dockerfile 작성
 
 > Dockerfile 파일
 ```dockerfile
@@ -47,23 +47,33 @@ CMD ["Hello World!"]
 EXPOSE 8080/tcp
 ```
 
-- FROM: 이미지 생성 시 사용할 베이스 이미지를 지정한다. Node.js 기반의 애플리케이션을 실행하기 위해 Node 런타임이 기본 포함되어 있는 베이지 이미지를 선택했다.
-- WORKDIR: 컨테이너 내에서 사용할 기본 작업 디렉토리를 지정한다. Node.js 이미지에서 웹 애플리케이션의 기본 디렉토리는 /usr/src/app 이다.
-- COPY: 이미지 내에 추가로 복사할 파일의 소스와 타겟을 지정하는 부분이며 현재 디렉토리에 있는 index.js를 컨테이너의 기본 작업 디렉토리 인 /usr/src/app 디렉토리에 복사한다.
-- RUN: 사용자 지정 이미지 빌드 시에 실행할 명령(애플리케이션이 아님)이며 ip 라는 Node.js 패키지를 설치한다.
-- ENTRYPOINT: 이미지를 실행 했을 때 실행할 애플리케이션을 지정하는 부분이다.
-- CMD: ENTRYPOINT의 인수이다.
-- EXPOSE: 애플리케이션을 노출하기 위한 포트와 프로토콜을 지정한다.
+- FROM
+  * 이미지 생성 시 사용할 베이스 이미지 지정 
+  * Node.js 기반의 애플리케이션을 실행하기 위해 Node 런타임이 기본 포함되어 있는 베이스 이미지 선택
+- WORKDIR
+  * 컨테이너 내에서 사용할 기본 작업 디렉토리를 지정
+  * Node.js 이미지에서 웹 애플리케이션의 기본 디렉토리는 /usr/src/app
+- COPY
+  * 이미지 내에 추가로 복사할 파일의 소스와 타겟을 지정하는 부분이며 
+  * 현재 디렉토리에 있는 index.js를 컨테이너의 기본 작업 디렉토리 인 /usr/src/app 디렉토리에 복사
+- RUN
+  * 사용자 지정 이미지 빌드 시에 실행할 명령(애플리케이션이 아님)이며 ip 라는 Node.js 패키지를 설치
+- ENTRYPOINT
+  * 이미지를 실행 했을 때 실행할 애플리케이션 지정
+- CMD
+  * ENTRYPOINT의 인수
+- EXPOSE
+  * 애플리케이션을 노출하기 위한 포트와 프로토콜 지정
 
-즉, 최종적으로 이 이미지를 빌드한 뒤 이 이미지를 이용하여 컨테이너를 생성하면 기본 실행되는 애플리케이션은 node index.js ”Hello World!“ 이다.
+즉, 최종적으로 이 이미지를 빌드한 뒤 이 이미지를 이용하여 컨테이너를 생성하면 기본 실행되는 애플리케이션은 node index.js ”Hello World!“ 임.
 
-컨테이너 생성 시 실행할 애플리케이션을 지정하기 위해 ENTRYPOINT와 CMD 를 사용할 수 있는데, 하나만 사용하는 방법이 있고, 둘 다 사용하는 방법 이 있다. 자세한 내용은 아래 주소를 참고한다.
+컨테이너 생성 시 실행할 애플리케이션을 지정하기 위해 ENTRYPOINT와 CMD를 사용할 수 있는데, 하나만 사용하는 방법이 있고, 둘 다 사용하는 방법 이 있음
 
 > 참고  
 > https://docs.docker.com/engine/reference/builder/
 
-### 3) 사용자 지정 이미지 빌드
-dockerfile과 index.js 파일이 준비되었다면 이를 이용해서 이미지를 빌드 한다.
+## 3. 사용자 지정 이미지 빌드
+dockerfile과 index.js 파일이 준비되었다면 이를 이용해서 이미지 빌드
 
 ```
 $ sudo docker image build -t myweb .
@@ -117,9 +127,9 @@ Successfully built eee9c69a6f7f
 Successfully tagged myweb:latest
 ```
 
-실제 이미지 빌드는 베이스 이미지인 node:slim을 컨테이너로 실행하여 필 요한 추가 요소들을 반영한 뒤 이 컨테이너를 다시 이미지로 로컬 호스트에 저장하게 된다.
+실제 이미지 빌드는 베이스 이미지인 node:slim을 컨테이너로 실행하여 필요한 추가 요소들을 반영한 뒤 이 컨테이너를 다시 이미지로 로컬 호스트에 저장
 
-이미지가 생성되었는지 확인한다.
+이미지가 생성되었는지 확인
 ```
 $ sudo docker image ls
 
@@ -129,21 +139,19 @@ myweb           latest  eee9c69a6f7f    About a minute ago   167MB
 ...
 ```
 
-### 4) 사용자 지정 이미지 테스트
+## 4. 사용자 지정 이미지 테스트
 
-#### (1) 컨테이너 실행
-node:slim을 베이스로 한 myweb:latest 이미지를 실행하고 테스트 해보자.
+### 1) 컨테이너 실행
+node:slim을 베이스로 한 myweb:latest 이미지 실행 및 테스트
 ```
 $ sudo docker container run --name test -d -p 8080:8080 myweb
 
 13877a227ed17bf7ee84d22e379a1d6bef40d4644f2ff81dcd55880c15df5492
 ```
 
-호스트 포트를 8080 포트를 컨테이너의 8080 포트로 포워딩 하도록 구성하였다.
+호스트 포트를 8080 포트를 컨테이너의 8080 포트로 포워딩 하도록 구성
 
-생성된 컨테이너의 애플리케이션이 작동하는지 확인해 보자. 8080 포트로 접근해야 한다.
-
-#### (2) 컨테이너 확인
+### 2) 컨테이너 확인
 ```
 $ sudo docker container ls -l
 
@@ -151,7 +159,7 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 13877a227ed1        myweb               "node index.js 'Hell…"   55 seconds ago      Up 54 seconds       0.0.0.0:8080->8080/tcp   test
 ```
 
-#### (3) 애플리케이션 동작 확인
+### 3) 애플리케이션 동작 확인
 ```
 $ curl http://localhost:8080
 
@@ -163,17 +171,19 @@ IP: 172.17.0.2
 DNS: 10.233.0.3,127.0.0.53
 ```
 
-#### (4) 컨테이너 종료
+### 4) 컨테이너 종료
 ```
 $ sudo docker rm -f test
 
 test
 ```
 
-### 5) 사용자 지정 이미지 업로드
-사용자 지정 이미지를 도커 허브에 업로드 하자. 우선 도커 허브에서 이미 지를 다운받는 것은 별도의 절차가 필요 없지만, 업로드 하기 위해서는 도커 허브의 계정이 필요하다. 계정이 없다면 hub.docker.com에 가서 가입한다.
+## 5. 사용자 지정 이미지 업로드
+사용자 지정 이미지를 도커 허브에 업로드
+우선 도커 허브에서 이미지를 다운받는 것은 별도의 절차가 필요 없지만, 업로드 하기 위해서는 도커 허브의 계정이 필요
+계정이 없다면 hub.docker.com 에서 가입
 
-#### (1) 도커 허브 인증
+### 1) 도커 허브 인증
 ```
 $ sudo docker login
 
@@ -183,8 +193,9 @@ Password: XXXXX
 Login Succeeded
 ```
 
-#### (2) 사용자 지정 이미지 이름 변경
-도커 허브에 이미지를 업로드 하기 위해서는 이미지 이름에 계정정보가 있어야한다. 기존에 빌드한 myweb:latest 이미지를 <계정>/myweb:latest 로 변경이 필요하다.
+### 2) 사용자 지정 이미지 이름 변경
+도커 허브에 이미지를 업로드 하기 위해서는 이미지 이름에 계정이름이 있어야 함.
+기존에 빌드한 myweb:latest 이미지를 <계정>/myweb:latest 로 변경
 ```
 $ sudo docker image tag myweb:latest <ACCOUNT>/myweb:latest
 ```
@@ -199,10 +210,10 @@ myweb           latest  eee9c69a6f7f    15 minute ago       167MB
 ...
 ```
 
-#### (3) 사용자 지정 이미지 업로드
+### 3) 사용자 지정 이미지 업로드
 ```
 $ sudo docker image push <ACCOUNT>/myweb:latest
 ```
 
 > 참고  
-> 도커 허브에 업로드한 이미지는 별도의 조치를 취하지 않는 경우 기본적으로 공개 이미지로 업로드 된다는 것을 명심한다.
+> 도커 허브에 업로드한 이미지는 별도의 조치를 취하지 않는 경우 기본적으로 공개 이미지로 업로드 된다.
