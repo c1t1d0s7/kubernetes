@@ -12,4 +12,4 @@
 
 - create --?--> apply
 
-- 03-04 또는 특정한 위치에 create, apple, replica, edit 등 비교 필요?
+- 03-04 또는 특정한 위치에 create, apply, replace, edit 등 비교 필요?
