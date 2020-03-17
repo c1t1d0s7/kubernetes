@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mynapp-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mynapp-rs
+  template:
+    metadata:
+      labels:
+        app: mynapp-rs
+    spec:
+      containers:
+      - name: mynapp
+        image: c1t1d0s7/myweb
+        ports:
+        - containerPort: 8080
