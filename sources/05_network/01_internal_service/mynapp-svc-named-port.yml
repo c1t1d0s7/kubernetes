@@ -8,4 +8,4 @@ spec:
     port: 80
     targetPort: mynapp-http
   selector:
-    app: mynapp-rs
+    app: mynapp-rs-nport
