@@ -9,7 +9,7 @@ metadata:
 spec:
   strategy:
     type: RollingUpdate
-    rollingupdate:
+    rollingUpdate:
       maxUnavailable: 1
       maxSurge: 1
   minReadySeconds: 5
