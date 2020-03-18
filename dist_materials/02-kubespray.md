@@ -115,7 +115,6 @@ vi inventory/mycluster/group_vars/k8s-cluster/addons.yml
 dashboard_enabled: true
 helm_enabled: true
 metrics_server_enabled: true
-local_volume_provisioner_enabled: true
 ingress_nginx_enabled: true
 ```
 
