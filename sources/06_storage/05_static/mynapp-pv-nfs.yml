@@ -9,5 +9,5 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    path: /nfs-volume #Modify
-    server: X.X.X.X #Modify
+    path: /nfs-volume
+    server: 192.168.56.11

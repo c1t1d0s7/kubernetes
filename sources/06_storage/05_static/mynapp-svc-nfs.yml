@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: mynapp-svc-nfs
 spec:
+  type: LoadBalancer
   ports:
   - port: 80
     targetPort: 80
