@@ -119,7 +119,7 @@ kubectl delete -f csi/rbd/pod.yaml -f csi/rbd/pvc.yml
 - filesystem.yaml: 프로덕션 환경에서 3개의 복제본 구성 (3개의 노드 필요)
 - filesystem-ec.yaml: 2+1의 EC(Erasure Coding) 구성 (3개의 노드 필요)
 - filesystem-test.yaml: 테스트 환경으로 1개의 복제본으로 구성 (단일 노드만 필요)
-- 
+
 ### CephFS 파일시스템 생성
 - Metadata Pool
 - Data Pool 생성
