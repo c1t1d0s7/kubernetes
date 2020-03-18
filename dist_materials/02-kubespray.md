@@ -47,6 +47,11 @@ sudo apt install -y python3 python3-pip git
 
 ## 2. Kubespray 배포
 
+- 홈 디렉토리 이동
+```
+cd ~
+```
+
 - kubespray Git repository 클론
 ```
 git clone https://github.com/kubernetes-sigs/kubespray.git  
