@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mynapp-rs-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mynapp-rs-ns
+  template:
+    metadata:
+      labels:
+        app: mynapp-rs-ns
+    spec:
+      nodeSelector:
+        gpu: highend
+      containers:
+      - name: mynapp
+        image: c1t1d0s7/myweb

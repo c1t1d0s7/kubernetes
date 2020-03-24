@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mynapp-rs-nn
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mynapp-rs-nn
+  template:
+    metadata:
+      labels:
+        app: mynapp-rs-nn
+    spec:
+      nodeName: kube-node1
+      containers:
+      - name: mynapp
+        image: c1t1d0s7/myweb

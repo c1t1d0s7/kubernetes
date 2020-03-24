@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mynapp-rs-nodeaff
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mynapp-rs-nodeaff
+  template:
+    metadata:
+      labels:
+        app: mynapp-rs-nodeaff
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: gpu
+                operator: In
+                values:
+                - highend
+                - midrange
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 10
+            preference:
+              matchExpressions:
+              - key: gpu-model
+                operator: In
+                values:
+                - titan
+      containers:
+      - name: mynapp
+        image: c1t1d0s7/myweb
