@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mynapp-rs-notol
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mynapp-rs-notol
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: mynapp-rs-notol
+        tier: backend
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: tier
+                operator: In
+                values:
+                - cache
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: mynapp
+        image: c1t1d0s7/myweb
