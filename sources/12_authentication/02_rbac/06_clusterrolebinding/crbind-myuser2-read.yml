@@ -1,7 +1,7 @@
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: crbind-myuser2-read
+  name: myuser2-read-cluster
 subjects:
 - kind: ServiceAccount
   name: myuser2
@@ -9,5 +9,5 @@ subjects:
   apiGroup: ""
 roleRef:
   kind: ClusterRole
-  name: crole-read-cluster-pod
+  name: read-cluster-pod
   apiGroup: "rbac.authorization.k8s.io"
