@@ -1,24 +1,57 @@
 # Vagrant 설치 및 사용법
+[Vagrant 공식 사이트](https://www.vagrantup.com/)
 
 작성날짜: 2018년 11월 30일  
-업데이트: 2020년 03월 13일
+업데이트: 2020년 03월 27일
 
-
-## 1. Vagrant 다운로드 및 설치
-- 설치 파일 및 패키지  
-https://www.vagrantup.com/downloads.html  
+## 1. 패키지 관리자 설치
+- Windows
+https://chocolatey.org/install
+  * Windows 7+ / Windows Server 2003+
+  * PowerShell v2+
+  * .NET Framework 4+ 
+```
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+```
 
 - macOS
+https://brew.sh/index_ko
 ```
-brew install cask vagrant
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
+
+## 2. Vagrant 다운로드 및 설치
+- 설치 파일 및 패키지  
+https://www.vagrantup.com/downloads.html  
 
 - Windows
 ```
 choco install vagrant
 ```
 
-## 2. Vagrant
+- macOS
+```
+brew cask install vagrant
+```
+
+## 3. VirtualBox 다운로드 및 설치
+- 설치 파일 및 패키지
+https://www.virtualbox.org/wiki/Downloads  
+https://download.virtualbox.org/virtualbox/6.1.4/VirtualBox-6.1.4-136177-Win.exe  
+https://download.virtualbox.org/virtualbox/6.1.4/VirtualBox-6.1.4-136177-OSX.dmg  
+https://download.virtualbox.org/virtualbox/6.1.4/Oracle_VM_VirtualBox_Extension_Pack-6.1.4.vbox-extpack  
+
+- Windows
+```
+choco install virtualbox choco install virtualbox.extensionpack
+```
+
+- macOS
+```
+brew cask install virtualbox virtualbox-extension-pack
+```
+
+## 4. Vagrant
 
 ### 플러그인 설치  
 ```
@@ -112,6 +145,17 @@ Vagrant.configure("2") do |config|
 end
 ```
 
+| Master       | IP               | CPU | Memory | Disk |
+|--------------|------------------|-----|--------|------|
+| kube-master1 | 192.168.56.11/24 | 2   | 4096MB | 20G  |
+
+| Node         | IP               | CPU | Memory | Disk |
+|--------------|------------------|-----|--------|------|
+| kube-node1   | 192.168.56.21/24 | 2   | 2048MB | 20G  |
+| kube-node2   | 192.168.56.22/24 | 2   | 2048MB | 20G  |
+| kube-node3   | 192.168.56.23/24 | 2   | 2048MB | 20G  |
+
+
 ### VM 배포
 ```
 vagrant up
@@ -127,7 +171,7 @@ vagrant status
 vagrant ssh kube-master1
 ```
 
-## 3. Vagrant 사용법
+## 5. Vagrant 사용법
 
 상태확인  
 ```

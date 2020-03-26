@@ -1,5 +1,5 @@
 # Rook을 이용한 Kubernetes 클러스터에 Ceph 클라우드 네이티브 스토리지 배포
-[Rook](https://rook.io)
+[Rook 공식 사이트](https://rook.io)
 
 작성날짜: 2020년 03월 13일  
 수정날짜: 2020년 03월 15일

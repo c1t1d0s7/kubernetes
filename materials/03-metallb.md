@@ -1,5 +1,5 @@
 # Kubernetes 로드밸런서 서비스를 위한 MetalLB 설치
-[MetalLB](https://metallb.universe.tf)
+[MetalLB 공식 사이트](https://metallb.universe.tf)
 
 작성날짜: 2020년 03월 13일  
 

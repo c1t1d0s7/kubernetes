@@ -1,8 +1,8 @@
 # Kubespray를 이용한 Production Ready Kubernetes 클러스터 배포
-[Kubespray GitHub Repository](https://github.com/kubernetes-sigs/kubespray)
+[Kubespray GitHub 저장소](https://github.com/kubernetes-sigs/kubespray)
 
 작성날짜: 2018년 11월 30일  
-업데이트: 2020년 03월 13일
+업데이트: 2020년 03월 27일
 
 (참고) kubespray는 Kubernetes를 프로덕션 온프레미스에 설치할 수 있는 배포방법(kubeadm 지원)
 
@@ -54,13 +54,13 @@ cd ~
 
 - kubespray Git repository 클론
 ```
-git clone https://github.com/kubernetes-sigs/kubespray.git  
+git clone --single-branch --branch v2.12.3 https://github.com/kubernetes-sigs/kubespray.git  
 ```
+2020년 3월 말 현재 v2.12.3 버전이 최신 릴리즈 버전
 
-- 안정버전 브랜치 변경
+- 디렉토리 변경
 ```
 cd kubespray
-git checkout -b v2.12.3
 ```
 
 - requirements.txt 파일에서 의존성 확인 및 설치
