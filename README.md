@@ -9,4 +9,4 @@ Kubernetes
 - Rook (for Cloud Native Storage)
 - Helm (for Kubernetes Package)
 - Prometheus-Operator (for Monitoring)
-- 
+
