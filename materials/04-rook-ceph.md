@@ -102,7 +102,7 @@ kubectl get storageclasses.storage.k8s.io
 
 ### RBD 볼륨 테스트 리소스 생성
 ```
-kubectl create -f csi/rbd/pod.yaml -f csi/rbd/pvc.yml
+kubectl create -f csi/rbd/pod.yaml -f csi/rbd/pvc.yaml
 ```
 
 ### RBD 볼륨 확인
@@ -112,7 +112,7 @@ kubectl get po,pv,pvc
 
 ### RBD 볼륨 테스트 리소스 삭제
 ```
-kubectl delete -f csi/rbd/pod.yaml -f csi/rbd/pvc.yml
+kubectl delete -f csi/rbd/pod.yaml -f csi/rbd/pvc.yaml
 ```
 
 ## 7. CephFS 파일시스템 노출
@@ -144,7 +144,7 @@ kubectl get storageclasses.storage.k8s.io
 
 ### CephFS 파일시스템 테스트 리소스 생성
 ```
-kubectl create -f csi/cephfs/pod.yaml -f csi/cephfs/pvc.yml
+kubectl create -f csi/cephfs/pod.yaml -f csi/cephfs/pvc.yaml
 ```
 
 ### CephFS 파일시스템 확인
@@ -154,5 +154,5 @@ kubectl get po,pv,pvc
 
 ### CephFS 파일시스템 테스트 리소스 삭제
 ```
-kubectl delete -f csi/cephfs/pod.yaml -f csi/cephfs/pvc.yml
+kubectl delete -f csi/cephfs/pod.yaml -f csi/cephfs/pvc.yaml
 ```
