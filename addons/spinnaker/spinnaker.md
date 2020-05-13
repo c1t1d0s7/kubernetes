@@ -256,6 +256,9 @@ helm install minio --namespace spinnaker --set accessKey="myaccesskey" --set sec
 #### S3 버저닝 비활성화
 MinIO는 객채의 버저닝(Versioning)을 지원하지 않음으로 기능을 비활성화
 ```
+mkdir ~/.hal/default/profiles
+```
+```
 echo "spinnaker.s3.versioning: false" > ~/.hal/default/profiles/front50-local.yml
 ```
 
