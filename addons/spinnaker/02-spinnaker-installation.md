@@ -1,59 +1,5 @@
 # Spinnaker
 
-# 1. 아키텍처
-
-## 1) Spinnaker 마이크로서비스
-- Deck
-  - 웹기반 UI
-- Gate
-  - API 게이트웨이
-  - Spinnaker의 모든 마이크로서비스는 Gate를 통해 통신함
-- Orca
-  - 오케스트레이션 엔진
-  - 모즌 임시 작업 및 파이프라인을 처리함
-- Clouddriver
-  - 클라우드 공급자에 대한 모든 변경 호출과 배포 된 모든 리소스의 색인을 생성하고 캐싱함
-- Front50
-  - 애플리케이션, 파이프라인, 프로젝트 및 알림의 메타데이터를 유지
-- Rosco
-  - 베이커리(Bakery)
-  - 클라우드 공급자에 불변의(immutable) VM 이미지를 생성
-  - packer를 이용해 이미지를 생성
-  - 예) GCE 이미지, AWS AMI, Azure VM 이미지
-- Igor
-  - Jenkins, Travis와 같은 CI 작업을 통해 파이프라인을 트리거하는데 사용
-- Echo
-  - Spinnaker의 이벤트 버스
-  - 알림 전송(예: Slack, 이메일, SMS)
-  - GitHub 등 웹 후크에 작용
-- Fiat
-  - Spinnaker의 인증 서비스
-- Kayenta
-  - Spinnaker에 대해 자동화된 카나리(canary) 분석 제공
-- Halyard
-  - Spinnaker의 구성 서비스
-  - Spinnaker의 배포 구성 작성 및 유효성 검사
-  - Spinnaker의 마이크로서비스 배포 및 업데이트
-
-## 2) Spinnaker 시스템 의존성
-![시스템 의존성](img/spinnaker-architecture.png)
-![시스템 의존성](img/spinnaker-system-dependency.png)
-
-## 3) 포트 매핑
-| 서비스        | 포트  |
-|-------------|------|
-| Clouddriver | 7002 |
-| Deck        | 9000 |
-| Echo        | 8089 |
-| Fiat        | 7003 |
-| Front50     | 8080 |
-| Gate        | 8084 |
-| Halyard     | 8064 |
-| Igor        | 8088 |
-| Kayenta     | 8090 |
-| Orca        | 8083 |
-| Rosco       | 8087 |
-
 # 2. Spinnaker 설치
 
 ## 1) 사전 요구 사항
@@ -61,38 +7,66 @@
 - Spinnaker를 설치할 Kubernetes 클러스터
 
 ## 2) Halyard 설치
+Halyard 설치 방법
+- 스크립트(패키지 설치)
+- Docker 컨테이너
+
+### (1) Halyard 스크립트 설치
 - Ubuntu 14.04, 16.04, 18.04
 - Debian 8, 9
 - macOS (10.13 이상)
 
-### (1) Halyard 최신 버전 다운로드
-#### Ubuntu/Debian
+#### A. Halyard 최신 버전 다운로드
+##### Ubuntu/Debian
 ```
 curl -O https://raw.githubusercontent.com/spinnaker/halyard/master/install/debian/InstallHalyard.sh
 ```
 
-#### macOS
+##### macOS
 ```
 curl -O https://raw.githubusercontent.com/spinnaker/halyard/master/install/macos/InstallHalyard.sh
 ```
 
-### (2) 설치
+#### B. 설치
 ```
 sudo bash InstallHalyard.sh
 ```
 
-### (옵션) (3) Halyard 업데이트
+#### C. (옵션) Halyard 업데이트
 ```
 sudo update-halyard
 ```
 
-### (옵션) (4) Halyard 제거
+#### D. (옵션) Halyard 제거
 ```
 hal deploy clean
 ```
 
 ```
 sudo ~/.hal/uninstall.sh
+```
+
+### (2) Halyard Docker 컨테이너 설치
+
+#### A. Docker CE 설치됨
+
+#### B. 로컬 Halyard 구성 디렉토리 생성
+```
+mkdir ~/.hal
+```
+
+#### C. Halyard 컨테이너 실행
+```
+docker run -p 8084:8084 -p 9000:9000 \
+  --name halyard -d \
+  -v ~/.hal:/home/spinnaker/.hal \
+  -v ~/.kube:/home/spinnaker/.kube \
+  gcr.io/spinnaker-marketplace/halyard:stable
+```
+
+#### D. Halyard 컨테이너 접속
+```
+docker exec -it halyard bash
 ```
 
 ## 3) 클라우드 공급자 선택
