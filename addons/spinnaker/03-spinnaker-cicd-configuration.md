@@ -126,7 +126,7 @@ Spinnaker UI에 접속해서 애플리케이션 및 파이프라인을 생성하
 2. Create Application 선택
    - Name: delivery-test 
    - Owner Email: [EMAIL 주소]
-3. Create 선택
+3. Create 선택  
 
 ![애플리케이션 생성](img/spin-ui-new-app.png)
 
@@ -207,10 +207,12 @@ spec:
   selector:
     app: web-test
 ```
+
 ![로드밸런서 생성](img/spin-ui-create-lb.png)
 
 5. Create 선택
 6. Operation succeeded! 확인
+ 
 ![로드밸런서 배포 확인](img/spin-ui-deploy-lb.png)
 
 7. Close 선택
@@ -222,26 +224,34 @@ spec:
 3. Select Execution Parameters
    - Type: Tag 선택
    - Tag: v0.1 선택
+ 
 ![파이프라인 수동 실행](img/spin-ui-pipe-manual-exec.png)
+
 4. Run 선택
 
 #### A. 수동 배포 확인
-- 배포 중
+- 배포 중  
+
 ![파이프라인 수동 실행중](img/spin-ui-pipe-manual-exec-running.png)
+
 - 배포 성공
+
 ![파이프라인 수동 성공](img/spin-ui-pipe-manual-exec-succeeded.png)
 
 #### B. 애플리케이션 확인
 1. INFRASTRUCTURE 탭 선택
 2. CLUSTERS 탭 선택
+
 ![인프라스트럭처 - 클러스터 확인](img/spin-ui-infra-cluster.png)
 
 spinnaker-autobuild:v0.1 이미지로 세 개의 파드가 실행되고 있는것을 확인할 수 있다.
 
 3. LOADBALANCERS 탭 선택
+
 ![인프라스트럭처 - 로드밸런서 확인](img/spin-ui-infra-lb.png)
 
 4. 우측 메뉴에서 Ingress 항목의 링크를 선택한다.
+
 ![Nginx 애플리케이션 확인](img/firefox-nginx-app-v0.1.png)
 
 ### (2) CI/CD 자동 배포 확인
@@ -279,20 +289,25 @@ git push origin v0.2
 
 ## 8) CI/CD 확인
 - GitHub Tag v0.2
+
 ![GitHub Tag v0.2](img/cicd-github-v0.2.png)
 
 - Docker Hub Automated Build v0.2
+
 ![Docker Hub Automated Build v0.2](img/cicd-dockerhub-v0.2.png)
 
 - Spinnaker - Pipeline - Automated Trigger
+
 ![Spinnaker - Pipeline - Automated Trigger](img/cicd-spinnaker-pipe-trigger-v0.2.png)
 
 - Spinnaker - Clusters v0.2
+
 ![Spinnaker - Clusters v0.2](img/cicd-spinnaker-infra-cluster-v0.2.png)
 
 - Spinnaker - LoadBalancer v0.2
+
 ![Spinnaker - LoadBalancer v0.2](img/cicd-spinnaker-infra-lb-v0.2.png)
 
 - Firefox - Nginx App v0.2
-![Firefox - Nginx App v0.2](img/firefox-nginx-app-v0.2.png)
 
+![Firefox - Nginx App v0.2](img/firefox-nginx-app-v0.2.png)
