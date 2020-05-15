@@ -142,7 +142,6 @@ rules:
 - apiGroups: ["extensions", "apps"]
   resources: ["deployments", "replicasets", "ingresses"]
   verbs: ["create", "delete", "deletecollection", "get", "list", "patch", "update", "watch"]
-# These permissions are necessary for halyard to operate. We use this role also to deploy Spinnaker itself.
 - apiGroups: [""]
   resources: ["services/proxy", "pods/portforward"]
   verbs: ["create", "delete", "deletecollection", "get", "list", "patch", "update", "watch"]
@@ -256,7 +255,7 @@ hal version list
 
 ### 2) Spinnaker 버전 선택
 ```
-hal config version edit --version 1.20.0
+hal config version edit --version 1.20.1
 ```
 
 ### 3) Spinnaker 배포

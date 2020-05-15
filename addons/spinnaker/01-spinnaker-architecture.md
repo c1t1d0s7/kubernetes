@@ -1,6 +1,24 @@
 # Spinnaker
 
-# 1. 아키텍처
+# 1. Spinnaker 개요
+Spinnaker는 오픈소스 기반의 지속적 제공(CD) 플랫폼으로 소프트웨어 변경 사항을 빠르고 확실하게 릴리즈 할 수 있다. Netflix에서 내부 적으로 개발해 사용하던 Asgard를 대채하기 위해 개발되었고 Google에 의해 확장되었다. 
+
+Spinnaker는 Kubernetes, GCP, AWS, Azure, OCI 등 플랫폼을 지원한다.
+
+2015년 11월 Apache License 2.0으로 릴리즈 되었다.
+
+> 참고
+> - CI(Continuous Integration: 지속적 통합)
+> - CD(Continuous Delivery: 지속적 제공)
+> - CD(Continuous Deployment: 지속적 배포)
+
+Code -> Build -> Intergrate -> Test -> Release -> Deploy -> Operate  
+<---------------CI---------------->  
+<---------------CD(Delivery)----------------->  
+<---------------CD(Deployment)------------------------->  
+<---------------DevOps-------------------------------------------->  
+
+# 2. 아키텍처
 
 ## 1) Spinnaker 마이크로서비스
 - Deck
