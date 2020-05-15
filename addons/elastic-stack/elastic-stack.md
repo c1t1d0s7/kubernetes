@@ -1,0 +1,273 @@
+# Elastic Stack
+
+# 1. 쿠버네티스 기본 로깅 개요
+쿠버네티스 클러스터는 기본적으로 로컬 호스트의 /var/log/pods, /var/log/containers 디렉토리에 해당 파드 및 컨테이너의 로그를 json 형식으로 남긴다. 현재 실행중인 파드의 경우 kubectl logs 명령으로 확인할 수 있다.
+
+이렇게 호스트 로컬에 로그를 남기는 경우 쿠버네티스 클러스터 노드의 수가 많다면, 로그를 관리하는 작업이 쉽지많은 않을 것이다. 또한 로그는 파드의 생명주기와 같아 파드가 삭제되면 해당 로그도 사라진다.
+
+엔터프라이즈 환경에서는 로그를 중앙집중식으로 모으고 관리하고, 파드의 생명주기와 상관없이 계속적으로 로그를 확인해야하는 경우도 있다.
+
+이 문제를 Elastic Stack을 구성하여 해결할 수 있다.
+
+# 2. Elastic Stack 개요
+
+![Elastic Stack 아키텍처(출처: elastic.co)](img/elastic-stack-architecture.png)
+
+Elastic Stack은 검색 및 분석 엔진으로 유명한 Elasticsearch 프로젝트로 부터 시작되었다. 처음에는 로그를 검색하고 분석하는 Elasticsearch, 로그를 수집하고 필터링하는 Logstash, 로그를 시각화해서 보여주는 Kibana의 앞글자를 따서 ELK Stack이라고 불렀다. 그러나 Logstash의 몇몇 문제점으로 인해 Logstash 대신 Fluentd를 사용해 로그를 수집하는 구성으로 EFK Stack이 탄생하였고, 최근에는 로그 뿐만 아니라, 메트릭, 패킷 등을 수집 할 수 있는 Beat 구성을 추가해 Elastic Stack이라는 구성을 제공한다.
+
+Elasticsearch는 2012년에 설립된 Elastic NV라는 회사에서 만들어 졌으며, Elasticsearch, Kibana, Logstash, Beats 등 여러 제품을 가지고 있으며 Apache 2.0 라이센스로 공개되어 있다. EFK Stack의 Fluentd는 Elastic NV의 제품이 아닌 별도의 오픈소스다. 모두 CNCF 재단에서 지원하는 프로젝트다.
+
+- Elastic Stack: Elasticsearch + Beats + (Logstash) + Kibana
+- EFK Stack: Elasticsearch + Fluentd + Kibana
+- ELK Stack: Elasticsearch + Logstash + Kibana
+
+- 검색 및 분석엔진: Elasticsearch
+- 시각화: Kibana
+- 데이터 수집: Logstash, Fluentd, Fluentbit, Elastic Beats(FileBeats, MetricBeats ...)
+
+# 3. 로그 수집기 비교 
+현재 오픈소스에서 가장 인기있는 데이터 수집기는 Logstash와 Fluentd 이다. 
+
+최근에는 Logstash 보다 Fluentd를 도입하는 추세가 있지만, 개인적인 의경으로는 아직까지는 Logstash가 약간의 우위에 있는것 같다. Logstash는 Elastic NV의 제품이라, Elasticsearch의 개발속도와 같이 맞물려 있지만, Fluentd는 같은 회사의 제품이 아니다 보니 개발속도가 조금 늦는 감이 없지 않아 있다.
+
+Logstash는 JRuby(Java + Ruby)로 만들어져 *nix 계열뿐만 아니라 윈도우 계열에서도 동작하며, Fluentd는 *nix의 라이브러리에 대한 종속성으로 최근까지 윈도우 계열을 지원하지 않았지만, 최근에는 윈도우 계열도 지원하기 시작했다.
+
+Logstash와 Fluentd의 주요 차이점은 Logstash는 내부에 영구(Persistent) 메시지 큐가 없다는 것이다. 그래서 Logstash는 안정성을 보장하기 위해 Redis 데이터베이스와 함께 배포해, (로그) 메시지를 Redis 데이터베이스에 저장하는 방법을 권장한다. Fluentd는 자체적으로 영구 저장소를 제공하는 버퍼를 가지고 있으며 메모리나 디스크에 저장할 수 있다.
+
+Logstash보다 Fluentd를 많이 사용하게된 가장 큰 차이점은 성능 부분 때문이다. Fluentd는 메모리를 40MB 사용하는 것에 비해, Logstash는 120MB 정도를 사용한다. 약 80MB 차이가 별거 아닐수도 있지만, Logstash 및 Fluentd는 로그 수집을 위해 쿠버네티스 클러스터 노드 각 하나씩 설치되다는 것을 생각하면, 노드 개수가 많은 경우 상당한 메모리 소모가 차이나게 된다.
+
+이 성능 때문에 최종(Leaf) 노드에서 로그 수집에만 사용되는 별도의 구성요소를 추가했는데, Logstash는 FileBeats, Fluentd는 FluentBit가 있다. FileBeats와 FluentBit는 Logstash와 Fluentd 대신에 로그를 수집해 Elasticsearch에 직접 전송할 수도 있고, FileBeats와 FluentBit는 로그 수집을 Logstash와 Fluentd는 로그 집계(Aggregation)로 구성할 수 있다.
+
+- FileBeats -> Elasticsearch -> Kibana
+- FluentBit -> Elasticsearch -> Kibana
+- FileBeats -> Logstash -> Elasticsearch -> Kibana
+- FluentBit -> Fluentd -> Elasticsearch -> Kibana
+
+# 4. Helm을 이용한 Elastic Stack 설치 
+가장 최신이면서 간단한 구성인 Elastic Stack(FileBeats, Elasticsearch, Kibana) 구성을 해보자.
+
+> 참고  
+> stable 저장소에 있는 elasticsearch 관련 차트는 버전 6을 마지막으로 더이상 업데이트되지 않는다. 현재는 버전 7이다.
+
+## 1) Elastic 저장소 추가
+elastic 이름으로 Elastic Helm 차트가 있는 저장소를 추가하자.
+```
+$ helm repo add elastic https://helm.elastic.co
+
+"elastic" has been added to your repositories
+```
+
+최신 차트로 업데이트하자.
+```
+$ helm repo update
+
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "elastic" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete. ⎈ Happy Helming!⎈
+```
+
+## 2) Elastic Stack용 네임스페이스 생성
+Elastic Stack을 배포할 logging 네임스페이스를 생성하자.
+```
+$ kubectl create namespace logging
+
+namespace/logging created
+```
+
+## 3) Elasticsearch 설치
+로그 분석을 위한 Elasticsearch를 설치하자. 
+
+Elasticsearch Helm 차트는 기본적으로 1GB의 Java 힙 메모리로 설정되어 있으며, 파드 리소스의 제한은 2GB로 설정되어 있다. 많은 데이터를 처리하기 위해서는 상황에 따라 이것보다 더 많은 리소스가 필요하지만, 지금은 테스트 및 현재 쿠버네티스 클러스터의 하드웨어 리소스를 고려해 아래와 같이 제한한다.
+
+Elasticsearch 설치에 사용할 사용자화 파일을 생성한다.
+> elastic-value.yaml
+```
+esJavaOpts: "-Xmx128m -Xms128m"
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256M"
+  limits:
+    cpu: "1000m"
+    memory: "1024M"
+```
+
+사용자화 파일을 이용해 릴리즈 이름은 search로 하고, logging 네임스페이스에 설치한다.
+```
+$ helm install search elastic/elasticsearch -f elastic-value.yaml -n logging
+
+NAME: search
+LAST DEPLOYED: Tue Mar 31 10:56:24 2020
+NAMESPACE: logging
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Watch all cluster members come up.
+  $ kubectl get pods --namespace=logging -l app=elasticsearch-master -w
+2. Test cluster health using Helm test.
+  $ helm test search
+```
+
+파드 및 모든 리소스 목록을 확인하자.
+```
+$ kubectl get all,pv,pvc -n logging
+
+NAME                         ...
+pod/elasticsearch-master-0   ...
+pod/elasticsearch-master-1   ...
+pod/elasticsearch-master-2   ...
+
+NAME                                    ...
+service/elasticsearch-master            ...
+service/elasticsearch-master-headless   ...
+
+NAME                                    ...
+statefulset.apps/elasticsearch-master   ...
+
+NAME                                                        ...
+persistentvolume/pvc-00ad66bf-ff29-4d0e-8661-dcfd036d82ab   ...
+persistentvolume/pvc-34374e68-c1a7-47d3-990d-75fa306de6f5   ...
+persistentvolume/pvc-5fdba987-9bae-4deb-8ea3-a8bf1129e7c8   ...
+
+NAME                                                                ...
+persistentvolumeclaim/elasticsearch-master-elasticsearch-master-0   ...
+persistentvolumeclaim/elasticsearch-master-elasticsearch-master-1   ...
+persistentvolumeclaim/elasticsearch-master-elasticsearch-master-2   ...
+```
+기본적으로 스테이트풀셋 컨트롤러로 파드가 세 개의 복제본으로 구성되어 있으며, 모든 Elasticsearch 파드가 생성 완료될 때까지 기다린다. elasticsearch-master 스테이트풀셋 컨트롤러의 세 개의 파드가 완전히 준비될 때 까지 약 5분정도 소요된다.
+
+## 4) Kibana 설치
+시각화를 위한 Kibana를 설치하자.
+
+Kibana Helm 차트역시 파드 리소스의 제한은 2GB로 설정되어 있다. 많은 데이터를 처리하기 위해서는 상황에 따라 이것보다 더 많은 리소스가 필요하지만, 지금은 테스트 및 현재 쿠버네티스 클러스터의 하드웨어 리소스를 고려해 아래와 같이 제한한다.
+
+Kibana 설치에 사용할 사용자화 파일을 생성한다.
+> kibana-value.yaml
+```
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256M"
+  limits:
+    cpu: "1000m"
+    memory: "1024M"
+
+service:
+  type: NodePort
+```
+Kibana에 접속하기 위한 서비스 리소스는 기본 ClusterIP로 생성된다. NodePort나 LoadBalancer로 구성할 수 있고, 필요하면 Ingress 컨트롤러를 구성할 수 있다.
+
+릴리즈 이름은 dashboard이며, 사용자화 파일을 적용하고, logging 네임스페이스에 생성한다.
+```
+$ helm install dashboard elastic/kibana -f kibana-value.yaml -n logging
+
+NAME: dashboard
+LAST DEPLOYED: Tue Mar 31 11:04:43 2020
+NAMESPACE: logging
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+```
+
+파드 및 모든 리소스를 확인해보자.
+```
+$ kubectl get all -n logging
+
+NAME                                  ...
+pod/dashboard-kibana-5fc7d8f9-vc9q2   ...
+...
+
+NAME                                  ...
+service/dashboard-kibana              ...
+
+...
+NAME                                        ...
+replicaset.apps/dashboard-kibana-5fc7d8f9   ...
+```
+
+### (옵션) Kibana 파드가 준비되지 않는 경우
+Kibana 파드의 로그를 확인해본다.
+```
+$ kubectl -n logging logs dashboard-kibana-XXXXXXX-XXXXX -f
+
+...
+... Error: [resource_already_exists_exception] index [.kibana_1/nHRooKNqRGWhq7sOmJKmsQ] already exists, with { index_uuid=\"nHRooKNqRGWhq7sOmJKmsQ\" & index=\".kibana_1\" }"}
+...
+```
+.kibana_1 인덱스가 이미 있어서 발생한 오류다. 인덱스를 지워줘야 한다.
+
+nettool 임시 파드를 logging 네임스페이스에서 실행한다.
+```
+$ kubectl run nettool -it --image=c1t1d0s7/network-multitool --generator=run-pod/v1 --rm=true -n logging bash 
+
+bash-5.0# curl -X DELETE http://elasticsearch-master:9200/.kibana_1
+{"acknowledged":true}
+
+bash-5.0# exit
+```
+curl 명령으로 elasticsearch-master .kubana_1 인텍스를 삭제한다.
+
+Kibana 파드를 삭제한다.
+```
+$ kubectl -n logging delete po dashboard-kibana-XXXXXXX-XXXXX
+```
+
+Kibana 파드가 새로 생성되어 준비되는지 확인한다.
+```
+$ kubectl get po -n logging
+NAME                              READY   STATUS    RESTARTS   AGE
+...
+dashboard-kibana-5fc7d8f9-bqgm4   1/1     Running   0          114s
+```
+
+## 5) FileBeats 설치 
+로그 수집을 위한 FileBeats를 설치하자.
+```
+$ helm install collector elastic/filebeat -n logging
+
+NAME: collector
+LAST DEPLOYED: Tue Mar 31 11:02:39 2020
+NAMESPACE: logging
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+1. Watch all containers come up.
+  $ kubectl get pods --namespace=logging -l app=collector-filebeat -w
+```
+
+파드 및 모든 리소스 목록을 확인하자.
+```
+$ kubectl get all -n logging
+
+NAME                           ...
+pod/collector-filebeat-fkqb2   ...
+pod/collector-filebeat-qfvp9   ...
+pod/collector-filebeat-qxz8n   ...
+...
+NAME                                ...
+daemonset.apps/collector-filebeat   ...
+...
+```
+FileBeats는 로그수집을 위해 모든 노드에 각 하나씩 배치하기 위해 데몬셋에 의해 구성된다. 모든 FileBeats 파드가 생성 완료될 때까지 기다린다.
+
+# 5. Kibana 대시보드 확인
+
+Kibana 파드가 생성되면, 쿠버네티스 클러스터의 노드 IP와 dashboard-kibana 서비스의 포트로 접속하면 된다.
+
+```http://192.168.56.21:XXXXX```
+
+1. Welcome 페이지: ```Explorer on my own``` 선택
+2. 좌측 패널: ```Management(기어)``` 선택
+3. Kibana의 ```Index Patterns``` 선택
+4. 우측 상단 ```Create index pattern``` 선택
+5. Step 1 of 2: Index pattern 박스에 ```filebeat-*``` 입력
+   - 하단에 filebeat-X.X.X-YYYY-MM-DD-000001 인덱스가 매칭이 되는지 확인
+   - ```Next Step``` 선택
+6. Step 2 of 2: Time Filter field name 드롭박스에 ```@timestamp``` 선택
+   - ```Create index pattern``` 선택 
+7. 좌측 패널: ```Discover(나침반)``` 선택
+
+![Kibana 대시보드](img/elastic-kibana.png)
