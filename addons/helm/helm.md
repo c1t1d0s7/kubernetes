@@ -3,7 +3,7 @@
 2019년 11월 13일 helm v3 릴리즈  
 
 # 1. 사전 요구사항
-- Kubernetes가 설치되어 있어야 한다. (Tiller)
+- Kubernetes가 설치되어 있어야 한다.
 - helm이 설치될 시스템에 kubectl이 설치되어 있어야 한다.
 - kubectl은 적절한 구성(~/.kube/config)으로 Kubernetes 클러스터에 접근할 수 있어야 한다.
 
@@ -327,7 +327,7 @@ mydb-custom-mysql   ClusterIP   10.96.171.124   <none>        13306/TCP   9m14s
 
 ### Helm 차트 롤백
 - ```helm rollback [NAME] [REVISiON]```
-- 
+
 ```bash
 $ helm rollback mydb-custom 1
 ```
