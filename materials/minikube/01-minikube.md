@@ -97,9 +97,30 @@ minikube delete
 ```
 
 ## 5. minikube Addon 설치
+Addon 관련 작업은 ```minikube start``` 상태에서만 가능
 
 ### Addon 목록 확인
 ```
 minikube addons list
 ```
 
+### 스토리지 관련 Addon 비활성화
+```
+minikube addons disable default-storageclass
+```
+```
+minikube addons disable storage-provisioner
+```
+
+### Ingress, Metrics-Server 활성화
+```
+minikube addons enable ingress
+```
+```
+minikube addons enable metrics-server
+```
+
+### MetalLB 활성화
+```
+minikube addons enable metallb
+```
