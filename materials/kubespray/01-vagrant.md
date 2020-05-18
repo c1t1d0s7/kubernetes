@@ -2,7 +2,7 @@
 [Vagrant 공식 사이트](https://www.vagrantup.com/)
 
 작성날짜: 2018년 11월 30일  
-업데이트: 2020년 03월 27일
+업데이트: 2020년 05월 18일
 
 ## 1. 패키지 관리자 설치
 - Windows
@@ -37,13 +37,10 @@ brew cask install vagrant
 ## 3. VirtualBox 다운로드 및 설치
 - 설치 파일 및 패키지
 https://www.virtualbox.org/wiki/Downloads  
-https://download.virtualbox.org/virtualbox/6.1.4/VirtualBox-6.1.4-136177-Win.exe  
-https://download.virtualbox.org/virtualbox/6.1.4/VirtualBox-6.1.4-136177-OSX.dmg  
-https://download.virtualbox.org/virtualbox/6.1.4/Oracle_VM_VirtualBox_Extension_Pack-6.1.4.vbox-extpack  
 
 - Windows
 ```
-choco install virtualbox choco install virtualbox.extensionpack
+choco install virtualbox virtualbox.extensionpack
 ```
 
 - macOS
@@ -78,9 +75,10 @@ cd kube
 > 참고: 호스트 시스템의 사양에 따라 Master 및 Node 개수 및 리소스를 적절하게 할당  
 > Master 최소 RAM 요구사항: 1536MB  
 > Node 최소 RAM 요구사항: 1024MB  
-```
-vi Vagrantfile
-```
+
+Vagrantfile 파일 작성
+
+> Vagrantfile
 ```Vagrant
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
@@ -147,13 +145,13 @@ end
 
 | Master       | IP               | CPU | Memory | Disk |
 |--------------|------------------|-----|--------|------|
-| kube-master1 | 192.168.56.11/24 | 2   | 4096MB | 20G  |
+| kube-master1 | 192.168.56.11/24 | 2   | 3072MB | 30G  |
 
 | Node         | IP               | CPU | Memory | Disk |
 |--------------|------------------|-----|--------|------|
-| kube-node1   | 192.168.56.21/24 | 2   | 2048MB | 20G  |
-| kube-node2   | 192.168.56.22/24 | 2   | 2048MB | 20G  |
-| kube-node3   | 192.168.56.23/24 | 2   | 2048MB | 20G  |
+| kube-node1   | 192.168.56.21/24 | 2   | 3072MB | 30G  |
+| kube-node2   | 192.168.56.22/24 | 2   | 3072MB | 30G  |
+| kube-node3   | 192.168.56.23/24 | 2   | 3072MB | 30G  |
 
 
 ### VM 배포
@@ -169,6 +167,11 @@ vagrant status
 ### VM 접속
 ```
 vagrant ssh kube-master1
+```
+
+### VM 종료
+```
+vagrant halt
 ```
 
 ## 5. Vagrant 사용법

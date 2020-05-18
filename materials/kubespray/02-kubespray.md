@@ -82,8 +82,8 @@ vi inventory/mycluster/inventory.ini
 [all]  
 kube-master1	ansible_host=192.168.56.11 ip=192.168.56.11 ansible_connection=local
 kube-node1      ansible_host=192.168.56.21 ip=192.168.56.21
-kube-node2 	ansible_host=192.168.56.22 ip=192.168.56.22
-kube-node3 	ansible_host=192.168.56.23 ip=192.168.56.23
+kube-node2 	    ansible_host=192.168.56.22 ip=192.168.56.22
+kube-node3 	    ansible_host=192.168.56.23 ip=192.168.56.23
 
 [all:vars]  
 ansible_python_interpreter=/usr/bin/python3
