@@ -62,7 +62,7 @@ choco install minikube kubernetes-cli
 ## 4. minikube 사용법
 ### minikube 최초 실행
 ```
-minikube start --cpus 2 --memory 3072 --disk-size 30g --nodes 4 --vm-driver virtualbox 
+minikube start --cpus X --memory X --disk-size X --nodes X --vm-driver X --kubernetes-version=v1.16.7
 ```
 
 - --cpus: CPU 개수 (기본 2)  
@@ -70,6 +70,7 @@ minikube start --cpus 2 --memory 3072 --disk-size 30g --nodes 4 --vm-driver virt
 - --disk-size: 디스크 크기 (기본 20GB)  
 - --nodes: 노드 개수 (기본 1)
 - --driver: 하이퍼바이저 (virtualbox parallels vmwarefusion kvm hyperkit vmware none)
+- --kuberentes-version: 쿠버네티스 버전 (기본 최신버전)
 
 ### minikube 상태확인
 ```
