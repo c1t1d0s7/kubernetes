@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mynapp-svc-sts
+  labels:
+    app: mynapp-svc-sts
+spec:
+  ports:
+  - name: http
+    port: 8080
+  clusterIP: None
+  selector:
+    app: mynapp-sts
