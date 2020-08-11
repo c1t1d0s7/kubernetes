@@ -54,9 +54,8 @@ cd ~
 
 - kubespray Git repository 클론
 ```
-git clone --single-branch --branch v2.12.3 https://github.com/kubernetes-sigs/kubespray.git  
+git clone --single-branch --branch release-2.12 https://github.com/kubernetes-sigs/kubespray.git  
 ```
-2020년 3월 말 현재 v2.12.3 버전이 최신 릴리즈 버전
 
 - 디렉토리 변경
 ```
