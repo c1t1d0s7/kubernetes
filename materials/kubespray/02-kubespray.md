@@ -42,6 +42,7 @@ ssh-copy-id vagrant@kube-node3
 - python3, pip, git 설치
 ```  
 sudo apt update  
+sudo apt upgrade
 sudo apt install -y python3 python3-pip git
 ```
 
