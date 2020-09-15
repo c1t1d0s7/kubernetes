@@ -2,9 +2,9 @@
 [Kubespray GitHub 저장소](https://github.com/kubernetes-sigs/kubespray)
 
 작성날짜: 2018년 11월 30일  
-업데이트: 2020년 03월 27일
+업데이트: 2020년 09월 15일
 
-(참고) kubespray는 Kubernetes를 프로덕션 온프레미스에 설치할 수 있는 배포방법(kubeadm 지원)
+(참고) kubespray는 Kubernetes를 프로덕션 온프레미스에 설치할 수 있는 배포방법(kubeadm 사용)
 
 ## 0. On-Premise 노드 구성
 OS: Ubuntu 18.04.4(Bionic)  
@@ -22,21 +22,26 @@ OS: Ubuntu 18.04.4(Bionic)
 
 ## 1. Requirements
 - Ansible 2.7.16, python-netaddr
-- Jinja 2.10.1
+- Jinja 2.9+
 - 인터넷 연결(도커 이미지 가져오기)
 - IPv4 포워딩
 - SSH 키 복사
 - 배포 중 문제가 발생하지 않도록 방화벽 비활성
 - 적절한 권한 상승(non-root 사용자인 경우, passwordless sudo 설정)
 
+- Master
+  * Memory: 1500MB
+- Node
+  * Memory: 1024MB 
+
 ### 1-1. Master Node
 - SSH 키 복사
 ```
 ssh-keygen  
-ssh-copy-id vagrant@localhost  
-ssh-copy-id vagrant@kube-node1  
-ssh-copy-id vagrant@kube-node2  
-ssh-copy-id vagrant@kube-node3  
+ssh-copy-id localhost  
+ssh-copy-id kube-node1  
+ssh-copy-id kube-node2  
+ssh-copy-id kube-node3  
 ```
 
 - python3, pip, git 설치
@@ -180,8 +185,8 @@ ansible-playbook -i inventory/mycluster/inventory.ini cluster.yml --become
 - 자격증명 가져오기
 ```
 mkdir ~/.kube
-sudo cp ~root/.kube/config ~/.kube
-sudo chown vagrant:vagrant -R ~/.kube
+sudo cp /etc/kubernetes/admin.conf ~/.kube/config
+sudo chown $USER:$USER ~/.kube/config
 ```
 
 - kubectl 명령 자동완성
