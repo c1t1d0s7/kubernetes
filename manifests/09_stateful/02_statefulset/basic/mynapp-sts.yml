@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: mynapp-sts
-  serviceName: mynapp-sts-svc
+  serviceName: mynapp-svc-sts
   replicas: 2
   template:
     metadata:
