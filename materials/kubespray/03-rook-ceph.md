@@ -2,7 +2,7 @@
 [Rook 공식 사이트](https://rook.io)
 
 작성날짜: 2020년 03월 13일  
-수정날짜: 2020년 09월 14일
+수정날짜: 2021년 01월 27일
 
 ## 0. 스토리지 준비
 Rook-Ceph 스토리지 클러스터는, 파티션 또는 파일시스템이 없는 원시 디스크가 하나 이상 있어야 함
@@ -23,7 +23,7 @@ sdb
 cd ~
 ```
 ```
-git clone --single-branch --branch release-1.4 https://github.com/rook/rook.git
+git clone --single-branch --branch release-1.5 https://github.com/rook/rook.git
 ```
 
 ## 2. Rook 일반 리소스 배포

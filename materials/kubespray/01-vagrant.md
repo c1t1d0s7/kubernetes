@@ -2,7 +2,7 @@
 [Vagrant 공식 사이트](https://www.vagrantup.com/)
 
 작성날짜: 2018년 11월 30일  
-업데이트: 2020년 05월 18일
+업데이트: 2021년 01월 27일
 
 ## 1. 패키지 관리자 설치
 - Windows
@@ -120,7 +120,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "kube-node3" do |config|
     config.vm.box = "ubuntu/bionic64"
     config.vm.provider "virtualbox" do |vb|
-     vb.name = "kube-node3"
+      vb.name = "kube-node3"
       vb.cpus = 2
       vb.memory = 3072
     end
@@ -152,7 +152,6 @@ end
 | kube-node1   | 192.168.56.21/24 | 2   | 3072MB | 30G  |
 | kube-node2   | 192.168.56.22/24 | 2   | 3072MB | 30G  |
 | kube-node3   | 192.168.56.23/24 | 2   | 3072MB | 30G  |
-
 
 ### VM 배포
 ```

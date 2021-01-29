@@ -2,7 +2,7 @@
 [Kubespray GitHub 저장소](https://github.com/kubernetes-sigs/kubespray)
 
 작성날짜: 2018년 11월 30일  
-업데이트: 2020년 09월 15일
+업데이트: 2021년 01월 27일
 
 (참고) kubespray는 Kubernetes를 프로덕션 온프레미스에 설치할 수 있는 배포방법(kubeadm 사용)
 
@@ -21,8 +21,8 @@ OS: Ubuntu 18.04.4(Bionic)
 
 
 ## 1. Requirements
-- Ansible 2.7.16, python-netaddr
-- Jinja 2.9+
+- Ansible 2.9+, python-netaddr
+- Jinja 2.11+
 - 인터넷 연결(도커 이미지 가져오기)
 - IPv4 포워딩
 - SSH 키 복사
@@ -60,7 +60,7 @@ cd ~
 
 - kubespray Git repository 클론
 ```
-git clone --single-branch --branch release-2.12 https://github.com/kubernetes-sigs/kubespray.git  
+git clone --single-branch --branch release-2.14 https://github.com/kubernetes-sigs/kubespray.git  
 ```
 
 - 디렉토리 변경
@@ -119,6 +119,17 @@ vi inventory/mycluster/group_vars/k8s-cluster/addons.yml
 ```
 metrics_server_enabled: true
 ingress_nginx_enabled: true
+metallb_enabled: true
+metallb_ip_range:
+- "192.168.56.200-192.168.56.209"
+metallb_protocol: "layer2"
+```
+
+```
+vi inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+```
+```
+kube_proxy_strict_arp: true
 ```
 
 - Ansible 통신 가능 확인
