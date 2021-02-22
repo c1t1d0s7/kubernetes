@@ -34,6 +34,15 @@ choco install vagrant
 brew cask install vagrant
 ```
 
+- Ubuntu
+```
+wget https://releases.hashicorp.com/vagrant/2.2.14/vagrant_2.2.14_x86_64.deb
+```
+
+```
+sudo dpkg -i vagrant_2.2.14_x86_64.deb
+```
+
 ## 3. VirtualBox 다운로드 및 설치
 - 설치 파일 및 패키지
 https://www.virtualbox.org/wiki/Downloads  
@@ -48,6 +57,29 @@ choco install virtualbox virtualbox.extensionpack
 brew cask install virtualbox virtualbox-extension-pack
 ```
 
+- Ubuntu
+> https://www.virtualbox.org/wiki/Linux_Downloads
+
+```
+echo -e "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian bionic contrib" | sudo tee -a /etc/apt/sources.list
+```
+
+```
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+```
+
+```
+wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+```
+
+```
+sudo apt-get update
+```
+
+```
+sudo apt-get install virtualbox virtualbox-guest-utils virtualbox-ext-pack
+```
+
 ## 4. Vagrant
 
 ### 플러그인 설치  
@@ -55,6 +87,8 @@ brew cask install virtualbox virtualbox-extension-pack
 vagrant plugin install vagrant-hostmanager  
 vagrant plugin install vagrant-disksize
 ```
+> vagrant-hostmanager: 호스트 및 게스트 시스템의 hosts 파일을 자동으로 관리
+> vagrant-disksize: Root 디스크를 원하는 크기로 설정가능
 
 ```
 vagrant plugin list
@@ -64,6 +98,7 @@ vagrant plugin list
 ```
 vagrant box add ubuntu/bionic64
 ```
+> ubuntu/bionic64: Ubuntu 18.04 LTS
 
 ### Vagrant 파일
 ```
@@ -79,21 +114,20 @@ cd kube
 Vagrantfile 파일 작성
 
 > Vagrantfile
-```Vagrant
+```
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.define "kube-master1" do |config|
+  config.vm.define "kube-controlplane1" do |config|
     config.vm.box = "ubuntu/bionic64"
     config.vm.provider "virtualbox" do |vb|
-      vb.name = "kube-master1"
+      vb.name = "kube-controlplane1"
       vb.cpus = 2
       vb.memory = 3072
     end
-    config.vm.hostname = "kube-master1"
+    config.vm.hostname = "kube-controlplane1"
     config.vm.network "private_network", ip: "192.168.56.11"
-    config.disksize.size = "30GB"
   end
   config.vm.define "kube-node1" do |config|
     config.vm.box = "ubuntu/bionic64"
@@ -104,7 +138,7 @@ Vagrant.configure("2") do |config|
     end
     config.vm.hostname = "kube-node1"
     config.vm.network "private_network", ip: "192.168.56.21"
-    config.disksize.size = "30GB"
+    config.disksize.size = "50GB"
   end
   config.vm.define "kube-node2" do |config|
     config.vm.box = "ubuntu/bionic64"
@@ -115,7 +149,7 @@ Vagrant.configure("2") do |config|
     end
     config.vm.hostname = "kube-node2"
     config.vm.network "private_network", ip: "192.168.56.22"
-    config.disksize.size = "30GB"
+    config.disksize.size = "50GB"
   end
   config.vm.define "kube-node3" do |config|
     config.vm.box = "ubuntu/bionic64"
@@ -126,7 +160,7 @@ Vagrant.configure("2") do |config|
     end
     config.vm.hostname = "kube-node3"
     config.vm.network "private_network", ip: "192.168.56.23"
-    config.disksize.size = "30GB"
+    config.disksize.size = "50GB"
   end
 
   # Hostmanager plugin
@@ -143,15 +177,15 @@ Vagrant.configure("2") do |config|
 end
 ```
 
-| Master       | IP               | CPU | Memory | Disk |
-|--------------|------------------|-----|--------|------|
-| kube-master1 | 192.168.56.11/24 | 2   | 3072MB | 30G  |
+| Control Plane      | IP               | CPU | Memory | Disk |
+|--------------------|------------------|-----|--------|------|
+| kube-controlplane1 | 192.168.56.11/24 | 2   | 3072MB | 50G  |
 
-| Node         | IP               | CPU | Memory | Disk |
-|--------------|------------------|-----|--------|------|
-| kube-node1   | 192.168.56.21/24 | 2   | 3072MB | 30G  |
-| kube-node2   | 192.168.56.22/24 | 2   | 3072MB | 30G  |
-| kube-node3   | 192.168.56.23/24 | 2   | 3072MB | 30G  |
+| Node               | IP               | CPU | Memory | Disk |
+|--------------------|------------------|-----|--------|------|
+| kube-node1         | 192.168.56.21/24 | 2   | 3072MB | 50G  |
+| kube-node2         | 192.168.56.22/24 | 2   | 3072MB | 50G  |
+| kube-node3         | 192.168.56.23/24 | 2   | 3072MB | 50G  |
 
 ### VM 배포
 ```
@@ -165,7 +199,7 @@ vagrant status
 
 ### VM 접속
 ```
-vagrant ssh kube-master1
+vagrant ssh kube-control
 ```
 
 ### VM 종료
