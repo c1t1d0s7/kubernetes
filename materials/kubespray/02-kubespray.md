@@ -2,22 +2,22 @@
 [Kubespray GitHub 저장소](https://github.com/kubernetes-sigs/kubespray)
 
 작성날짜: 2018년 11월 30일  
-업데이트: 2021년 01월 27일
+업데이트: 2021년 02월 23일
 
 (참고) kubespray는 Kubernetes를 프로덕션 온프레미스에 설치할 수 있는 배포방법(kubeadm 사용)
 
 ## 0. On-Premise 노드 구성
-OS: Ubuntu 18.04.4(Bionic)  
+OS: Ubuntu 18.04 LTS(Bionic)
 
-| Master       |                  |
-|--------------|------------------|
-| kube-master1 | 192.168.56.11/24 |
+| Control Plane      | IP               | CPU | Memory | Disk |
+|--------------------|------------------|-----|--------|------|
+| kube-controlplane1 | 192.168.56.11/24 | 2   | 3072MB | 30G  |
 
-| Node         |                  |
-|--------------|------------------|
-| kube-node1   | 192.168.56.21/24 |
-| kube-node2   | 192.168.56.22/24 |
-| kube-node3   | 192.168.56.23/24 |
+| Node               | IP               | CPU | Memory | Disk |
+|--------------------|------------------|-----|--------|------|
+| kube-node1         | 192.168.56.21/24 | 2   | 3072MB | 30G  |
+| kube-node2         | 192.168.56.22/24 | 2   | 3072MB | 30G  |
+| kube-node3         | 192.168.56.23/24 | 2   | 3072MB | 30G  |
 
 
 ## 1. Requirements
@@ -34,15 +34,17 @@ OS: Ubuntu 18.04.4(Bionic)
 - Node
   * Memory: 1024MB 
 
-### 1-1. Master Node
+### 1-1. Control Plane
 - SSH 키 복사
 ```
-ssh-keygen  
-ssh-copy-id localhost  
+ssh-keygen -f ~/.ssh/id_rsa -N ''
+ssh-copy-id kube-controlplane1
 ssh-copy-id kube-node1  
 ssh-copy-id kube-node2  
 ssh-copy-id kube-node3  
 ```
+
+> vagrant 이미지의 기본 사용자 vagrant, 기본 패스워드 vagrant 
 
 - python3, pip, git 설치
 ```  
@@ -58,7 +60,7 @@ sudo apt install -y python3 python3-pip git
 cd ~
 ```
 
-- kubespray Git repository 클론
+- kubespray Git 저장소 클론
 ```
 git clone --single-branch --branch release-2.14 https://github.com/kubernetes-sigs/kubespray.git  
 ```
@@ -121,7 +123,7 @@ metrics_server_enabled: true
 ingress_nginx_enabled: true
 metallb_enabled: true
 metallb_ip_range:
-- "192.168.56.200-192.168.56.209"
+  - "192.168.56.200-192.168.56.209"
 metallb_protocol: "layer2"
 ```
 
@@ -205,7 +207,6 @@ sudo chown $USER:$USER ~/.kube/config
 kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl
 exec bash
 ```
-
 
 - Kubernetes 클러스터 확인
 ```
