@@ -87,19 +87,19 @@ vi inventory/mycluster/inventory.ini
 
 ```
 [all]  
-kube-master1	ansible_host=192.168.56.11 ip=192.168.56.11 ansible_connection=local
-kube-node1      ansible_host=192.168.56.21 ip=192.168.56.21
-kube-node2 	    ansible_host=192.168.56.22 ip=192.168.56.22
-kube-node3 	    ansible_host=192.168.56.23 ip=192.168.56.23
+kube-controlplane1 ansible_host=192.168.56.11 ip=192.168.56.11 ansible_connection=local
+kube-node1 ansible_host=192.168.56.21 ip=192.168.56.21
+kube-node2 ansible_host=192.168.56.22 ip=192.168.56.22
+kube-node3 ansible_host=192.168.56.23 ip=192.168.56.23
 
 [all:vars]  
 ansible_python_interpreter=/usr/bin/python3
 
 [kube-master]  
-kube-master1 
+kube-controlplane1 
 
 [etcd]  
-kube-master1  
+kube-controlplane1  
 
 [kube-node]  
 kube-node1  
@@ -182,18 +182,11 @@ kube-node2 | CHANGED => {
 }
 ```
 
-- (옵션) apt 업데이트 시 오류가 난다면 해당 VM로 이동해서 아래와 같이 조치
-```
-sudo rm -rf /var/lib/apt/lists/*
-sudo apt update --fix-missing
-sudo apt update
-```
-
 - 플레이북 실행
 ```
 ansible-playbook -i inventory/mycluster/inventory.ini cluster.yml --become
 ```
-> 호스트 시스템 사양, VM 개수, VM 리소스 및 네트워크 성능에 따라 20분~40분 소요
+> 호스트 시스템 사양, VM 개수, VM 리소스 및 네트워크 성능에 따라 8~15분 소요
 
 - 자격증명 가져오기
 ```
