@@ -135,6 +135,11 @@ Vagrant.configure("2") do |config|
       vb.name = "kube-node1"
       vb.cpus = 2
       vb.memory = 3072
+      unless File.exist?('./.disk/ceph1.vdi')
+        vb.customize ['createmedium', 'disk', '--filename', './.disk/ceph1.vdi', '--size', 10240]
+      end
+      vb.customize ['storageattach', :id, '--storagectl', 'SCSI', '--port', 2, '--device', 0, '--type', 'hdd', '--medium',
+'./.disk/ceph1.vdi']
     end
     config.vm.hostname = "kube-node1"
     config.vm.network "private_network", ip: "192.168.56.21"
@@ -146,6 +151,11 @@ Vagrant.configure("2") do |config|
       vb.name = "kube-node2"
       vb.cpus = 2
       vb.memory = 3072
+      unless File.exist?('./.disk/ceph2.vdi')
+        vb.customize ['createmedium', 'disk', '--filename', './.disk/ceph2.vdi', '--size', 10240]
+      end
+      vb.customize ['storageattach', :id, '--storagectl', 'SCSI', '--port', 2, '--device', 0, '--type', 'hdd', '--medium',
+'./.disk/ceph2.vdi']
     end
     config.vm.hostname = "kube-node2"
     config.vm.network "private_network", ip: "192.168.56.22"
@@ -157,6 +167,11 @@ Vagrant.configure("2") do |config|
       vb.name = "kube-node3"
       vb.cpus = 2
       vb.memory = 3072
+      unless File.exist?('./.disk/ceph3.vdi')
+        vb.customize ['createmedium', 'disk', '--filename', './.disk/ceph3.vdi', '--size', 10240]
+      end
+      vb.customize ['storageattach', :id, '--storagectl', 'SCSI', '--port', 2, '--device', 0, '--type', 'hdd', '--medium',
+'./.disk/ceph3.vdi']
     end
     config.vm.hostname = "kube-node3"
     config.vm.network "private_network", ip: "192.168.56.23"
@@ -177,15 +192,15 @@ Vagrant.configure("2") do |config|
 end
 ```
 
-| Control Plane      | IP               | CPU | Memory | Disk |
-|--------------------|------------------|-----|--------|------|
-| kube-controlplane1 | 192.168.56.11/24 | 2   | 3072MB | 50G  |
+| Control Plane      | IP               | CPU | Memory | Root | Disk |
+|--------------------|------------------|-----|--------|------|------|
+| kube-controlplane1 | 192.168.56.11/24 | 2   | 3072MB | 50G  |      |
 
-| Node               | IP               | CPU | Memory | Disk |
-|--------------------|------------------|-----|--------|------|
-| kube-node1         | 192.168.56.21/24 | 2   | 3072MB | 50G  |
-| kube-node2         | 192.168.56.22/24 | 2   | 3072MB | 50G  |
-| kube-node3         | 192.168.56.23/24 | 2   | 3072MB | 50G  |
+| Node               | IP               | CPU | Memory | Root | Disk |
+|--------------------|------------------|-----|--------|------|------|
+| kube-node1         | 192.168.56.21/24 | 2   | 3072MB | 50G  | 10G  |
+| kube-node2         | 192.168.56.22/24 | 2   | 3072MB | 50G  | 10G  |
+| kube-node3         | 192.168.56.23/24 | 2   | 3072MB | 50G  | 10G  |
 
 ### VM 배포
 ```
