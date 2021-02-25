@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: myapp-job-comp
+spec:
+  completions: 3
+  template:
+    metadata:
+      labels:
+        app: myapp-job-comp
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: myapp
+        image: busybox
+        command: ["sleep", "60"]
