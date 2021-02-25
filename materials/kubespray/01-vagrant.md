@@ -188,6 +188,7 @@ Vagrant.configure("2") do |config|
     sed -i 's/archive.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list
     sed -i 's/security.ubuntu.com/ftp.daum.net/g' /etc/apt/sources.list
     systemctl restart ssh
+    apt install chrony
   SHELL
 end
 ```
