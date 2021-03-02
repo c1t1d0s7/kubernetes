@@ -11,6 +11,8 @@ spec:
       labels:
         app: myapp-ds
     spec:
+      nodeSelector:
+        node: development
       containers:
       - name: myapp
         image: ghcr.io/c1t1d0s7/go-myweb
