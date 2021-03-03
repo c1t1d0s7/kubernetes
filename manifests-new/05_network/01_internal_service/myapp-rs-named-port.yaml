@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: myapp-rs-nport
+  name: myapp-rs-namedport
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: myapp-rs-nport
+      app: myapp-rs-namedport
   template:
     metadata:
       labels:
-        app: myapp-rs-nport
+        app: myapp-rs-namedport
     spec:
       containers:
       - name: myapp

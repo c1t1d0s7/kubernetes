@@ -9,5 +9,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: myapp-svc-ext-np
+          serviceName: myapp-svc-np
           servicePort: 80
