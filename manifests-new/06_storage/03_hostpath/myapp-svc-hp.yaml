@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: myapp-svc-hp
 spec:
+  type: LoadBalancer
   ports:
   - port: 80
     targetPort: 80
