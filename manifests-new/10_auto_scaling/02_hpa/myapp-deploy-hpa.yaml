@@ -13,7 +13,7 @@ spec:
         app: myapp-deploy-hpa
     spec:
       containers:
-      - image: ghcr.io/c1t1d0s7/go-myweb
+      - image: ghcr.io/c1t1d0s7/go-myweb:alpine
         name: myapp
         resources:
           requests:

@@ -4,7 +4,7 @@ metadata:
   name: myapp-pod-huge-req
 spec:
   containers:
-  - image: ghcr.io/c1t1d0s7/go-myweb
+  - image: ghcr.io/c1t1d0s7/go-myweb:alpine
     name: myapp
     resources:
       requests:
