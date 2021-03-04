@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: myapp-sts-vol
-  serviceName: myapp-svc-sts
+  serviceName: myapp-svc-headless
   replicas: 2
   template:
     metadata:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: ghcr.io/c1t1d0s7/go-myweb
+        image: ghcr.io/c1t1d0s7/go-myweb:alpine
         ports:
         - containerPort: 8080
         volumeMounts:

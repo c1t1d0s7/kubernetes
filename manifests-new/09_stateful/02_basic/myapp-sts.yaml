@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: myapp-sts
-  serviceName: myapp-svc-sts
+  serviceName: myapp-svc-headless
   replicas: 2
   template:
     metadata:
