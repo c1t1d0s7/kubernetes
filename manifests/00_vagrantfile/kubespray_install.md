@@ -1,7 +1,7 @@
 # Kubespray를 이용한 Production Ready Kubernetes 클러스터 배포
 [Kubespray GitHub 저장소](https://github.com/kubernetes-sigs/kubespray)
 
-작성날짜: 2018년 11월 30일
+작성날짜: 2018년 11월 30일  
 업데이트: 2021년 08월 23일
 
 > kubespray는 Kubernetes를 프로덕션 온프레미스에 설치할 수 있는 배포방법 (kubeadm 사용)  
@@ -31,7 +31,7 @@ OS: Ubuntu 20.04 LTS(Focal)
 * Node
 	* Memory: 1024MB
 
-### 1-1. Control Plane
+### 1-1. kube-node1(Control Plane)
 * SSH 키 복사
 ```
 ssh-keygen -f ~/.ssh/id_rsa -N ''
