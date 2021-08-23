@@ -7,7 +7,7 @@
 > kubespray는 Kubernetes를 프로덕션 온프레미스에 설치할 수 있는 배포방법 (kubeadm 사용)  
 
 ## 0. On-Premise 노드 구성
-OS: Ubuntu 18.04 LTS(Bionic)
+OS: Ubuntu 20.04 LTS(Focal)
 
 ```markdown
 | Node               | IP               | CPU | Memory | Additional Disk |
