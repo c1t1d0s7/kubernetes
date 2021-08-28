@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: mynapp-pod
+  name: myapp-pod
 spec:
   containers:
-  - image: c1t1d0s7/myweb
-    name: mynapp
+  - image: ghcr.io/c1t1d0s7/go-myweb
+    name: myapp
     ports:
     - containerPort: 8080
       protocol: TCP
